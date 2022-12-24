@@ -1,10 +1,9 @@
 # order is lat1,lon1,lat2,lon2
-class Coordinates(object):
+class Coordinates:
     CZECHIASLOVAKIA = (47, 11, 52, 23)
-    WESTERN_EUROPE = (35, -13, 53, 11)  # placeholder
+    WESTERN_EUROPE = (35, -13, 53, 11)
 
 
-# (41, 12, 36, 11)
 def coords_to_string(coordinates):
     return ", ".join(map(str, coordinates))
 
