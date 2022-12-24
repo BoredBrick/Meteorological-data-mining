@@ -30,5 +30,5 @@ def get_airmass_region(coords):
                'crs': 'EPSG:4326',
                'bbox': region_l,
                'width': width,
-               'height': int(width / 2.5)}
+               'height': int(width / ratio)}
     return requests.get(service_url, params=payload)
