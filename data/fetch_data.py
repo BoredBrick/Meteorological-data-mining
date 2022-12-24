@@ -1,25 +1,30 @@
 import datetime as dt
+
 import requests
 
 # OPEN WEATHER MAP API guide - https://openweathermap.org/current
 
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather?"
-#API_KEY = open('api_key', 'r').read()
+# API_KEY = open('api_key', 'r').read()
 API_KEY = "1e71cfe93daced52e4c97934b1f9576b"
+
+
 # CITY = "Split"
 
 def kelvin_to_celsius_fahrenheit(kelvin):
     celsius = kelvin - 273.15
-    fahrenheit = celsius * (9/5) + 32
+    fahrenheit = celsius * (9 / 5) + 32
     return celsius, fahrenheit
 
-def fetch_data(city = None) -> requests.models.Response:
+
+def fetch_data(city=None) -> requests.models.Response:
     # fetch data
     url = BASE_URL + "appid=" + API_KEY + "&q=" + city
     response = requests.get(url).json()
     return response
 
-def print_data(response = None):
+
+def print_data(response=None):
     city = response['name']
     temp_kelvin = response['main']['temp']
     temp_celsius, temp_fahrenheit = kelvin_to_celsius_fahrenheit(temp_kelvin)

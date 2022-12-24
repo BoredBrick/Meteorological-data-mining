@@ -1,9 +1,10 @@
 import requests
 
 from authentification import authentification as auth
+from coordinates import coordinates
 
 
-def get_airmass_region(lat1, lon1, lat2, lon2):
+def get_airmass_region(coords):
     access_token = auth.get_token()
 
     service_url = 'https://view.eumetsat.int/geoserver/ows?'
@@ -12,11 +13,11 @@ def get_airmass_region(lat1, lon1, lat2, lon2):
     format_option = 'image/jpeg'
 
     # Define region of interest
-    region_l = ", ".join(map(str, [lat1, lon1, lat2, lon2]))  # Czechoslovakia # order is lat1,lon1,lat2,lon2
+    region_l = coordinates.coords_to_string(coords)
 
     # set the size of the image
     width = 1200
-    ratio = (lon2 - lon1) / (lat2 - lat1)
+    ratio = coordinates.calculate_ratio(coords)
 
     # Create the request for RGB Airmass
     api_method = 'GetMap'
