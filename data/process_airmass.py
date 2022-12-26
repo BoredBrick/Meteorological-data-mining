@@ -32,7 +32,8 @@ def get_airmass_region(coords):
                'access_token': access_token,
                'request': api_method,
                'version': '1.3.0',
-               'layers': airmass_layer + "," + land_layer + "," + coastline_layer + "," + countries_layer + "," + provinces_layer + "," + cities_layer,
+               'layers': airmass_layer + "," + land_layer + "," + coastline_layer + "," + countries_layer + ","
+                         + provinces_layer + "," + cities_layer,
                'format': format_option,
                'crs': 'EPSG:4326',
                'bbox': region_l,

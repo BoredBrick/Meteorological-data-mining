@@ -19,8 +19,8 @@ def get_token() -> str:
 
 # ---------------------------------------------------------------------------
 
-def generate_token(apis_endpoint="https://api.eumetsat.int", \
-                   consumer_key=None, consumer_secret=None, \
+def generate_token(apis_endpoint="https://api.eumetsat.int",
+                   consumer_key=None, consumer_secret=None,
                    credentials_file=None, token_url=None):
     '''
     Function to generate an access token for interacting with EUMETSAT Data
@@ -79,7 +79,7 @@ def assert_response(response, success_code=200):
     '''
 
     assert response.status_code == success_code, \
-        "API Request Failed: {}\n{}".format(response.status_code, \
+        "API Request Failed: {}\n{}".format(response.status_code,
                                             response.content)
 
 
