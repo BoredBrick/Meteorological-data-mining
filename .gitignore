@@ -1,5 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### Python template
+credentials.json
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
