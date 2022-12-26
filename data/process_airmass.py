@@ -9,7 +9,14 @@ def get_airmass_region(coords):
 
     service_url = 'https://view.eumetsat.int/geoserver/ows?'
 
-    target_layer = "msg_fes:rgb_airmass"
+    # layers
+    airmass_layer = "msg_fes:rgb_airmass"
+    land_layer = "backgrounds:ne_boundary_lines_land"
+    coastline_layer = "backgrounds:ne_10m_coastline"
+    countries_layer = "osmgray:ne_10m_admin_0_countries_points"
+    provinces_layer = "osmgray:ne_10m_admin_1_states_provinces_lines"
+    cities_layer = "osmgray:osm_places"
+
     format_option = 'image/jpeg'
 
     # Define region of interest
@@ -25,7 +32,7 @@ def get_airmass_region(coords):
                'access_token': access_token,
                'request': api_method,
                'version': '1.3.0',
-               'layers': target_layer + ",backgrounds:ne_boundary_lines_land",
+               'layers': airmass_layer + "," + land_layer + "," + coastline_layer + "," + countries_layer + "," + provinces_layer + "," + cities_layer,
                'format': format_option,
                'crs': 'EPSG:4326',
                'bbox': region_l,
