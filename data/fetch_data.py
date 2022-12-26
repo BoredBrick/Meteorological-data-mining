@@ -46,3 +46,6 @@ def print_data(response=None):
     print(f"Sun sets in {city}: {sunset_time} local time")
 
     # print(response)
+
+def get_latitude_longitude(response=None):
+    return response['coord']['lat'], response['coord']['lon']
