@@ -1,6 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### Python template
-credentials.json
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -183,4 +182,6 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 # idea folder, uncomment if you don't need it
-# .idea
+.idea
+AIRMASS
+
