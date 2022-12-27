@@ -6,7 +6,8 @@ import time
 import urllib.request
 import warnings
 
-from coordinates.coordinates import Coordinates
+from coordinates.coordinates import get_val_by_index
+from coordinates.coordinates import print_locations
 from data import fetch_data as fetcher
 from data import process_airmass as airmass
 
@@ -29,7 +30,9 @@ def main():
 
             match option:
                 case "1":
-                    response = airmass.get_airmass_region(Coordinates.WESTERN_EUROPE)
+                    print_locations()
+                    location = input("Choose a location: ")
+                    response = airmass.get_airmass_region(get_val_by_index(int(location)))
 
                     folder_name = "AIRMASS//"  # Donwload the files in a folder with the name of the product
                     os.makedirs(folder_name, exist_ok=True)
