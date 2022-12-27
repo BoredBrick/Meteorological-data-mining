@@ -1,5 +1,7 @@
 import requests
-
+import urllib.request
+import os
+import time
 from authentification import authentification as auth
 from coordinates import coordinates
 
@@ -10,7 +12,7 @@ def get_airmass_region(coords):
     service_url = 'https://view.eumetsat.int/geoserver/ows?'
 
     # layers
-    airmass_layer = "msg_fes:rgb_airmass"
+    airmass_layer = "msg_fes:rgb_airmass" # alternatives: msg_iodc:rgb_airmass, mumi:wideareacoverage_rgb_airmass, mumi:worldcloudmap_ir108
     land_layer = "backgrounds:ne_boundary_lines_land"
     coastline_layer = "backgrounds:ne_10m_coastline"
     countries_layer = "osmgray:ne_10m_admin_0_countries_points"
@@ -39,3 +41,12 @@ def get_airmass_region(coords):
                'width': width,
                'height': int(width / ratio)}
     return requests.get(service_url, params=payload)
+
+def get_airmass_image(response=None):
+    folder_name = "AIRMASS//"  # Donwload the files in a folder with the name of the product
+    os.makedirs(folder_name, exist_ok=True)
+    img_landing = folder_name + time.strftime("%Y_%m_%d-%H_%M_%S") + ".jpg"
+    urllib.request.urlretrieve(response.url, img_landing)
+    print("Image of Airmass was stored successfully!")
+
+    return img_landing
