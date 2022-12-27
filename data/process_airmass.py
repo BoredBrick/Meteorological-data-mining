@@ -1,6 +1,6 @@
 import requests
 
-from authentification import authentification as auth
+from auth import authentication as auth
 from coordinates import coordinates
 
 

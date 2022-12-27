@@ -2,7 +2,7 @@ import datetime as dt
 
 import requests
 
-import authentification.credentials as credentials
+import auth.credentials as credentials
 
 # OPEN WEATHER MAP API guide - https://openweathermap.org/current
 
