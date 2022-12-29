@@ -4,7 +4,7 @@ import json
 import requests
 import unidecode as unidecode
 
-import auth.credentials as credentials
+import authentication.credentials as credentials
 
 # OPEN WEATHER MAP API guide - https://openweathermap.org/current
 
