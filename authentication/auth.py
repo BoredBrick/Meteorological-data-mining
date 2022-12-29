@@ -5,7 +5,7 @@ import warnings
 
 import requests
 
-from auth import credentials
+from authentication import credentials
 
 
 def get_token() -> str:

@@ -4,7 +4,7 @@ import urllib
 
 import requests
 
-from auth import authentication as auth
+from authentication import auth as auth
 from coordinates import coordinates
 
 

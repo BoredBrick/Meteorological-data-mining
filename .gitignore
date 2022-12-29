@@ -185,4 +185,4 @@ fabric.properties
 .idea
 AIRMASS
 
-auth/credentials.py
+authentication/credentials.py
