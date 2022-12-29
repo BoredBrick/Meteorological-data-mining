@@ -63,7 +63,13 @@ def main():
                 if (option == "1"):
                     break
                 else:
-                    time.sleep(10)
+                    waiting = 0
+                    while (not keyboard.is_pressed('q')):
+                        waiting += 0.1
+                        if (waiting >= 10):
+                            break
+                        time.sleep(0.1)
+                        print(waiting)
 
             wasEnd = True
 
