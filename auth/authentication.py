@@ -1,4 +1,3 @@
-# import cv2
 import json
 import os
 import sys
@@ -6,21 +5,21 @@ import warnings
 
 import requests
 
+from auth import credentials
+
 
 def get_token() -> str:
     sys.path.append(os.path.dirname(os.getcwd()))
     warnings.simplefilter("ignore")
-    credentials = import_credentials(
-        os.path.join(str(os.getcwd()), 'authentification', 'credentials.json'))
-    access_token = generate_token(consumer_key=credentials['consumer_key'],
-                                  consumer_secret=credentials['consumer_secret'])
+    access_token = generate_token(consumer_key=credentials.consumer_key,
+                                  consumer_secret=credentials.consumer_secret)
     return access_token
 
 
 # ---------------------------------------------------------------------------
 
-def generate_token(apis_endpoint="https://api.eumetsat.int", \
-                   consumer_key=None, consumer_secret=None, \
+def generate_token(apis_endpoint="https://api.eumetsat.int",
+                   consumer_key=None, consumer_secret=None,
                    credentials_file=None, token_url=None):
     '''
     Function to generate an access token for interacting with EUMETSAT Data
@@ -79,31 +78,5 @@ def assert_response(response, success_code=200):
     '''
 
     assert response.status_code == success_code, \
-        "API Request Failed: {}\n{}".format(response.status_code, \
+        "API Request Failed: {}\n{}".format(response.status_code,
                                             response.content)
-
-
-# ---------------------------------------------------------------------------
-
-def import_credentials(filename):
-    '''
-    Function to read <CONSUMER_KEY> and <CONSUMER_SECRET> from a JSON format
-    file.
-
-    Args:
-        fiename (str):      The credentials filename
-
-    Returns:
-        Nothing if success, error message if fail.
-    '''
-
-    try:
-        with open(filename, 'r') as json_file:
-            credentials = json.load(json_file)
-    except:
-        print('File does not exist or is not in the correct format')
-        return
-
-    print('Successfully retrieved credentials....')
-    return credentials
-# ---------------------------------------------------------------------------

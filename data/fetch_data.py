@@ -1,19 +1,17 @@
-from unidecode import unidecode
 import datetime as dt
 import json
 
 import requests
+import unidecode as unidecode
+
+import auth.credentials as credentials
 
 # OPEN WEATHER MAP API guide - https://openweathermap.org/current
 
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather?"
-# API_KEY = open('api_key', 'r').read()
-API_KEY = "1e71cfe93daced52e4c97934b1f9576b"
 
 
-# CITY = "Split"
-
-def kelvin_to_celsius_fahrenheit(kelvin) -> tuple:
+def kelvin_to_celsius_fahrenheit(kelvin):
     celsius = kelvin - 273.15
     fahrenheit = celsius * (9 / 5) + 32
     return celsius, fahrenheit
@@ -21,7 +19,7 @@ def kelvin_to_celsius_fahrenheit(kelvin) -> tuple:
 
 def fetch_data(city=None) -> requests.models.Response:
     # fetch data
-    url = BASE_URL + "appid=" + API_KEY + "&q=" + city
+    url = BASE_URL + "appid=" + credentials.api_key + "&q=" + city
     response = requests.get(url).json()
     return response
 
