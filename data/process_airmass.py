@@ -1,3 +1,7 @@
+import os
+import time
+import urllib
+
 import requests
 
 from auth import authentication as auth
@@ -40,3 +44,13 @@ def get_airmass_region(coords):
                'width': width,
                'height': int(width / ratio)}
     return requests.get(service_url, params=payload)
+
+
+def get_airmass_image(response=None):
+    folder_name = "AIRMASS//"  # Donwload the files in a folder with the name of the product
+    os.makedirs(folder_name, exist_ok=True)
+    img_landing = folder_name + time.strftime("%Y_%m_%d-%H_%M_%S") + ".jpg"
+    urllib.request.urlretrieve(response.url, img_landing)
+    print("Image of Airmass was stored successfully!")
+
+    return img_landing

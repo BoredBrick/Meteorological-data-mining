@@ -1,10 +1,10 @@
 import argparse
 import math
-import os
 import sys
 import time
-import urllib.request
 import warnings
+
+from PIL import Image
 
 from coordinates.coordinates import get_val_by_index
 from coordinates.coordinates import print_locations
@@ -33,18 +33,15 @@ def main():
                     print_locations()
                     location = input("Choose a location: ")
                     response = airmass.get_airmass_region(get_val_by_index(int(location)))
-
-                    folder_name = "AIRMASS//"  # Donwload the files in a folder with the name of the product
-                    os.makedirs(folder_name, exist_ok=True)
-                    img_landing = folder_name + time.strftime("%Y_%m_%d-%H_%M_%S") + ".jpg"
-                    urllib.request.urlretrieve(response.url, img_landing)
-                    print("Image of Airmass was stored successfully!")
+                    image_path = airmass.get_airmass_image(response)
+                    image = Image.open(image_path)  # import to database
+                    image.show()
 
                 case "2":
                     city = input("Choose a city: ")
                     response = fetcher.fetch_data(city)
-                    fetcher.print_data(response)
-                    print(fetcher.get_latitude_longitude(response))
+                    fetcher.get_data(response)
+                    data = fetcher.data_to_json(response)  # import to database
 
                 case "0":
                     break
@@ -54,21 +51,33 @@ def main():
 
         elif args["fetch"] == "all":
             city = input("Choose a city: ")
-            response = fetcher.fetch_data(city)
-            fetcher.print_data(response)
-            coords = fetcher.get_latitude_longitude(response)
-            print("latitude: ", coords[0])
-            print("longitude: ", coords[1])
 
-            response = airmass.get_airmass_region((math.floor(coords[0]) - 1, math.floor(coords[1]) - 1,
-                                                   math.ceil(coords[0]) + 1, math.ceil(coords[1]) + 1))
+            print("[1] Fetch once")
+            print("[2] Endless fetching")
+            option = input("Choose an option: ")
 
-            folder_name = "AIRMASS//"  # Donwload the files in a folder with the name of the product
-            os.makedirs(folder_name, exist_ok=True)
-            img_landing = folder_name + time.strftime("%Y_%m_%d-%H_%M_%S") + ".jpg"
-            urllib.request.urlretrieve(response.url, img_landing)
-            print("Image of Airmass was stored successfully!")
-            break
+            while (not keyboard.is_pressed('q')):
+                response = fetcher.fetch_data(city)
+                fetcher.get_data(response)
+                data = fetcher.data_to_json(response)  # import to database
+                coords = fetcher.get_latitude_longitude(response)
+
+                response = airmass.get_airmass_region((math.floor(coords[0]) - 1, math.floor(coords[1]) - 1,
+                                                       math.ceil(coords[0]) + 1, math.ceil(coords[1]) + 1))
+                image_path = airmass.get_airmass_image(response)
+                image = Image.open(image_path)  # import to database
+                # image.show()
+
+                if (option == "1"):
+                    break
+                else:
+                    waiting = 0
+                    while (not keyboard.is_pressed('q')):
+                        waiting += 0.1
+                        if (waiting >= 10):
+                            break
+                        time.sleep(0.1)
+                        print(waiting)
 
 
 if __name__ == "__main__":
