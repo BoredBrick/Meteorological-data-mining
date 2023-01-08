@@ -1,5 +1,4 @@
 import argparse
-import math
 import sys
 import time
 import warnings
@@ -10,7 +9,6 @@ from PIL import Image
 from coordinates.coordinates import get_val_by_index
 from coordinates.coordinates import print_locations
 from data import fetch_data as fetcher
-from data import process_airmass as airmass
 
 warnings.simplefilter("ignore")
 
@@ -57,28 +55,19 @@ def main():
             print("[2] Endless fetching")
             option = input("Choose an option: ")
 
-            while not keyboard.is_pressed('q'):
-                response = fetcher.fetch_data(city)
-                fetcher.get_data(response)
-                data = fetcher.data_to_json(response)  # import to database
-                coords = fetcher.get_latitude_longitude(response)
+            data, image = fetcher.fetch_city_data(city)
 
-                response = airmass.get_airmass_region((math.floor(coords[0]) - 1, math.floor(coords[1]) - 1,
-                                                       math.ceil(coords[0]) + 1, math.ceil(coords[1]) + 1))
-                image_path = airmass.get_airmass_image(response)
-                image = Image.open(image_path)  # import to database
-                # image.show()
+            if option == "1":
+                break
 
-                if option == "1":
-                    break
-                else:
-                    waiting = 0
-                    while not keyboard.is_pressed('q'):
-                        waiting += 0.1
-                        if waiting >= 10:
-                            break
-                        time.sleep(0.1)
-                        print(waiting)
+            looping = True
+            while looping:
+                data, image = fetcher.fetch_city_data(city)
+                for _ in range(100):
+                    time.sleep(0.1)
+                    if keyboard.is_pressed('q'):
+                        looping = False
+                        break
 
 
 if __name__ == "__main__":

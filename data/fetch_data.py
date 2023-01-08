@@ -1,10 +1,13 @@
 import datetime as dt
 import json
+import math
 
 import requests
 import unidecode as unidecode
+from PIL import Image
 
 import authentication.credentials as credentials
+from data import process_airmass as airmass
 
 # OPEN WEATHER MAP API guide - https://openweathermap.org/current
 
@@ -22,6 +25,19 @@ def fetch_data(city=None) -> requests.models.Response:
     url = BASE_URL + "appid=" + credentials.api_key + "&q=" + city
     response = requests.get(url).json()
     return response
+
+
+def fetch_city_data(city):
+    response = fetch_data(city)
+    get_data(response)
+    data = data_to_json(response)  # import to database
+    coords = get_latitude_longitude(response)
+
+    response = airmass.get_airmass_region((math.floor(coords[0]) - 1, math.floor(coords[1]) - 1,
+                                           math.ceil(coords[0]) + 1, math.ceil(coords[1]) + 1))
+    image_path = airmass.get_airmass_image(response)
+    image = Image.open(image_path)  # import to database
+    return data, image
 
 
 # this method is used only for tests
@@ -49,7 +65,7 @@ def print_data(response=None):
     print(response)
 
 
-def get_data(response=None) -> dict:
+def get_data(response) -> dict:
     time_of_data_calc = dt.datetime.utcfromtimestamp(response['dt'] + response['timezone'])  # time of data calculation
     city = response['name']  # city name
     latitude = response['coord']['lat']  # city geo location, latitude
@@ -84,7 +100,7 @@ def get_data(response=None) -> dict:
 
     data = {
         "time_of_data_calc": time_of_data_calc,
-        "city": unidecode(city),
+        "city": unidecode.unidecode(city),
         "latitude": latitude,
         "longitude": longitude,
         "weather": weather,
