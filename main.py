@@ -9,6 +9,7 @@ from PIL import Image
 from coordinates.coordinates import get_val_by_index
 from coordinates.coordinates import print_locations
 from data import fetch_data as fetcher
+from data import process_airmass as airmass
 
 warnings.simplefilter("ignore")
 
