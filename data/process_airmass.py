@@ -54,7 +54,7 @@ def get_airmass_image(response=None):
     os.makedirs(folder_name, exist_ok=True)
     img_landing = folder_name + time.strftime("%Y_%m_%d-%H_%M_%S") + ".jpg"
     urllib.request.urlretrieve(response.url, img_landing)
-    print("Image of Airmass was stored successfully!")
+    print("\u001b[32mImage of Airmass was stored successfully!\u001b[0m")
 
     return img_landing
 

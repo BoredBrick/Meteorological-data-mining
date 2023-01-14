@@ -127,12 +127,15 @@ def get_data(response) -> dict:
         "sunset_time": sunset_time
     }
 
+    print(f"\u001b[32mMeteorological data of\u001b[0m {city} \u001b[32mwas stored successfully!\u001b[0m")
+
     return data
 
 
 def data_to_json(response=None) -> str:
     json_object = json.dumps(get_data(response), default=str, indent=4)
     print(json_object)
+    print()
     return json_object
 
 

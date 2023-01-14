@@ -23,22 +23,29 @@ def main():
 
         if len(sys.argv) < 2:
             print()
-            print("[1] Fetch Airmass Data")
-            print("[2] Fetch Other Data")
-            print("[0] Quit application")
-            option = input("Choose an option: ")
+            print("\u001b[36;1m---------------------------------------------------------")
+            print("  A script for mining meteorological data from websites")
+            print("---------------------------------------------------------\u001b[0m")
+            print()
+            print("\u001b[36m[1]\u001b[37m Fetch Airmass Data\u001b[0m")
+            print("\u001b[36m[2]\u001b[37m Fetch Other Data\u001b[0m")
+            print("\u001b[36m[0]\u001b[37m Quit Application\u001b[0m")
+            option = input("\u001b[35mChoose an option:\u001b[0m ")
+            print()
 
             match option:
                 case "1":
                     print_locations()
-                    location = input("Choose a location: ")
+                    location = input("\u001b[35mChoose index of location:\u001b[0m ")
+                    print()
                     response = airmass.get_airmass_region(get_val_by_index(int(location)))
                     image_path = airmass.get_airmass_image(response)
                     image = Image.open(image_path)  # import to database
                     image.show()
 
                 case "2":
-                    city = input("Choose a city: ")
+                    city = input("\u001b[35mChoose a city:\u001b[0m ")
+                    print()
                     response = fetcher.fetch_data(city)
                     fetcher.get_data(response)
                     data = fetcher.data_to_json(response)  # import to database
@@ -51,29 +58,33 @@ def main():
 
         elif args["fetch"] == "all":
             print()
-            print("[1] Fetch For Location")
-            print("[2] Fetch For City")
-            print("[0] Quit application")
-            option_location = input("Choose an option: ")
+            print("\u001b[36m---------------------------------------------------------")
+            print("  A script for mining meteorological data from websites")
+            print("---------------------------------------------------------\u001b[0m")
+            print()
+            print("\u001b[36m[1]\u001b[37m Fetch For Location\u001b[0m")
+            print("\u001b[36m[2]\u001b[37m Fetch For City\u001b[0m")
+            print("\u001b[36m[0]\u001b[37m Quit application\u001b[0m")
+            option_location = input("\u001b[35mChoose an option:\u001b[0m ")
+            print()
 
             match option_location:
                 case "1":
                     print_locations()
-                    location = input("Choose an area: ")
-
+                    location = input("\u001b[35mChoose an area:\u001b[0m ")
+                    print()
                 case "2":
-                    city = input("Choose a city: ")
-
+                    city = input("\u001b[35mChoose a city:\u001b[0m ")
+                    print()
                 case "0":
                     break
-
                 case _:
                     continue
 
+            print("\u001b[36m[1]\u001b[37m Fetch once\u001b[0m")
+            print("\u001b[36m[2]\u001b[37m Endless fetching\u001b[0m")
+            option_fetching = input("\u001b[35mChoose an option:\u001b[0m ")
             print()
-            print("[1] Fetch once")
-            print("[2] Endless fetching")
-            option_fetching = input("Choose an option: ")
 
             while not keyboard.is_pressed('q'):
 
