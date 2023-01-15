@@ -3,10 +3,11 @@ import time
 import urllib
 
 import requests
+from pyproj import Proj, transform
 
 from authentication import auth as auth
 from coordinates import coordinates
-from pyproj import Proj, transform
+
 
 def get_airmass_region(coords):
     access_token = auth.get_token()
@@ -25,13 +26,10 @@ def get_airmass_region(coords):
 
     # Define region of interest
     region_l = coordinates.coords_to_string(get_projected_coords(coords))
+    ratio = coordinates.calculate_ratio(get_projected_coords(coords))
 
     # set the size of the image
-    width = 1200
-
-    # TODO:
-    #   THIS RATIO NEEDS TO BE UPDATED FOR SPHERICAL MERCATOR PROJECTION
-    ratio = coordinates.calculate_ratio(coords)
+    width = 1280
 
     # Create the request for RGB Airmass
     api_method = 'GetMap'
@@ -45,7 +43,7 @@ def get_airmass_region(coords):
                'crs': 'EPSG:3857',
                'bbox': region_l,
                'width': width,
-               'height': int(width / ratio)}
+               'height': int(width * ratio)}
     return requests.get(service_url, params=payload)
 
 
@@ -58,14 +56,15 @@ def get_airmass_image(response=None):
 
     return img_landing
 
+
 def get_projected_coords(coords) -> tuple:
-    inProj = Proj(init='epsg:4326')
-    outProj = Proj(init='epsg:3857')
+    in_proj = Proj(init='epsg:4326')
+    out_proj = Proj(init='epsg:3857')
     lat1, lon1 = coords[0], coords[1]
-    projLat1, projLon1 = transform(inProj, outProj, lon1, lat1)
+    proj_lat1, proj_lon1 = transform(in_proj, out_proj, lon1, lat1)
     lat2, lon2 = coords[2], coords[3]
-    projLat2, projLon2 = transform(inProj, outProj, lon2, lat2)
+    proj_lat2, proj_lon2 = transform(in_proj, out_proj, lon2, lat2)
 
-    projCoords = projLat1, projLon1, projLat2, projLon2
+    proj_coords = proj_lat1, proj_lon1, proj_lat2, proj_lon2
 
-    return projCoords
+    return proj_coords

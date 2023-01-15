@@ -75,4 +75,4 @@ def coords_to_string(coordinates: tuple) -> str:
 
 
 def calculate_ratio(coordinates: tuple):
-    return (abs(coordinates[3] - coordinates[1])) / abs((coordinates[2] - coordinates[0]))
+    return abs(coordinates[3] - coordinates[1]) / abs(coordinates[2] - coordinates[0])

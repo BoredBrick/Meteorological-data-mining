@@ -1,8 +1,9 @@
 import argparse
+import math
 import sys
 import time
 import warnings
-import math
+
 import keyboard
 from PIL import Image
 
@@ -92,7 +93,7 @@ def main():
                     response = airmass.get_airmass_region(get_val_by_index(int(location)))
                     image_path = airmass.get_airmass_image(response)
                     image = Image.open(image_path)  # import to database
-                    #image.show()
+                    # image.show()
                 else:
                     response = fetcher.fetch_data(city)
                     fetcher.get_data(response)
@@ -114,6 +115,7 @@ def main():
                         if waiting >= 10:
                             break
                         time.sleep(0.1)
+
 
 if __name__ == "__main__":
     main()
