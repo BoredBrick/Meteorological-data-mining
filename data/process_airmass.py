@@ -25,8 +25,9 @@ def get_airmass_region(coords):
     format_option = 'image/jpeg'
 
     # Define region of interest
-    region_l = coordinates.coords_to_string(get_projected_coords(coords))
-    ratio = coordinates.calculate_ratio(get_projected_coords(coords))
+    projected_coords = get_projected_coords(coords)
+    region_l = coordinates.coords_to_string(projected_coords)
+    ratio = coordinates.calculate_ratio(projected_coords)
 
     # set the size of the image
     width = 1280
