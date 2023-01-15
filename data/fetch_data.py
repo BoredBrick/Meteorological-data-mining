@@ -14,20 +14,20 @@ from data import process_airmass as airmass
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather?"
 
 
-def kelvin_to_celsius_fahrenheit(kelvin):
+def kelvin_to_celsius_fahrenheit(kelvin) -> (float, float):
     celsius = kelvin - 273.15
     fahrenheit = celsius * (9 / 5) + 32
     return celsius, fahrenheit
 
 
-def fetch_data(city=None) -> requests.models.Response:
+def fetch_data(city) -> requests.models.Response:
     # fetch data
     url = BASE_URL + "appid=" + credentials.api_key + "&q=" + city
     response = requests.get(url).json()
     return response
 
 
-def fetch_city_data(city):
+def fetch_city_data(city) -> (str, Image):
     response = fetch_data(city)
     get_data(response)
     data = data_to_json(response)  # import to database
@@ -41,7 +41,7 @@ def fetch_city_data(city):
 
 
 # this method is used only for tests
-def print_data(response=None):
+def print_data(response) -> None:
     city = response['name']
     temp_kelvin = response['main']['temp']
     temp_celsius, temp_fahrenheit = kelvin_to_celsius_fahrenheit(temp_kelvin)
@@ -132,12 +132,12 @@ def get_data(response) -> dict:
     return data
 
 
-def data_to_json(response=None) -> str:
+def data_to_json(response) -> str:
     json_object = json.dumps(get_data(response), default=str, indent=4)
     print(json_object)
     print()
     return json_object
 
 
-def get_latitude_longitude(response=None) -> tuple:
+def get_latitude_longitude(response) -> tuple:
     return response['coord']['lat'], response['coord']['lon']

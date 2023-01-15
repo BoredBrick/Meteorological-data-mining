@@ -61,12 +61,12 @@ coordinates = {
 INDEX_OFFSET = 1
 
 
-def print_locations():
+def print_locations() -> None:
     for count, key in enumerate(coordinates):
         print(f"{count + INDEX_OFFSET}. {key}")
 
 
-def get_val_by_index(index: int):
+def get_val_by_index(index: int) -> tuple:
     return list(coordinates.values())[index - INDEX_OFFSET]
 
 
@@ -74,5 +74,5 @@ def coords_to_string(coordinates: tuple) -> str:
     return ", ".join(map(str, coordinates))
 
 
-def calculate_ratio(coordinates: tuple):
+def calculate_ratio(coordinates: tuple) -> float:
     return abs(coordinates[3] - coordinates[1]) / abs(coordinates[2] - coordinates[0])
