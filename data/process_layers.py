@@ -1,3 +1,17 @@
+layers = {
+    "AIRMASS_RGB": "msg_fes:rgb_airmass",
+    "CONVECTION_RGB": "msg_fes:rgb_convection",
+    "DAY_MICROPHYSICS_RGB": "msg_fes:rgb_microphysics",
+    "DUST_RGB": "msg_fes:rgb_dust",
+    "FOG_LOW_CLOUDS_RGB": "msg_fes:rgb_fog",
+    "SNOW_RGB": "msg_fes:rgb_snow",
+    "EUROPEAN_HRV_RGB": "msg_fes:rgb_eview",
+    "CLOUD_MASK": "msg_fes:clm",
+    "CLOUD_TOP_HEIGHT": "msg_fes:cth"
+}
+
+INDEX_OFFSET = 1
+
 import os
 import time
 import urllib
@@ -9,13 +23,25 @@ from authentication import auth as auth
 from coordinates import coordinates
 
 
-def get_airmass_region(coords):
+def get_key_of_layer_by_index(index: int) -> str:
+    return list(layers.keys())[index - INDEX_OFFSET]
+
+
+def get_val_of_layer_by_index(index: int) -> str:
+    return list(layers.values())[index - INDEX_OFFSET]
+
+
+def print_layers() -> None:
+    for count, key in enumerate(layers):
+        print(f"{count + INDEX_OFFSET}. {key}")
+
+
+def get_layer_region(coords: tuple, layer: str):
     access_token = auth.get_token()
 
     service_url = 'https://view.eumetsat.int/geoserver/ows?'
 
-    # layers
-    airmass_layer = "msg_fes:rgb_airmass"
+    # default layers
     land_layer = "backgrounds:ne_boundary_lines_land"
     coastline_layer = "backgrounds:ne_10m_coastline"
     countries_layer = "osmgray:ne_10m_admin_0_countries_points"
@@ -38,7 +64,7 @@ def get_airmass_region(coords):
                'access_token': access_token,
                'request': api_method,
                'version': '1.3.0',
-               'layers': airmass_layer + "," + land_layer + "," + coastline_layer + "," + countries_layer + ","
+               'layers': layer + "," + land_layer + "," + coastline_layer + "," + countries_layer + ","
                          + provinces_layer + "," + cities_layer,
                'format': format_option,
                'crs': 'EPSG:3857',
@@ -48,12 +74,12 @@ def get_airmass_region(coords):
     return requests.get(service_url, params=payload)
 
 
-def get_airmass_image(response=None):
-    folder_name = "AIRMASS//"  # Donwload the files in a folder with the name of the product
+def get_layer_image(layer: str, response=None):
+    folder_name = layer + "//"  # Donwload the files in a folder with the name of the product
     os.makedirs(folder_name, exist_ok=True)
     img_landing = folder_name + time.strftime("%Y_%m_%d-%H_%M_%S") + ".jpg"
     urllib.request.urlretrieve(response.url, img_landing)
-    print("\u001b[32mImage of Airmass was stored successfully!\u001b[0m")
+    print("\u001b[32mImage of " + layer + " was stored successfully!\u001b[0m")
 
     return img_landing
 

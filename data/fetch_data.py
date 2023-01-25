@@ -7,7 +7,7 @@ import unidecode as unidecode
 from PIL import Image
 
 import authentication.credentials as credentials
-from data import process_airmass as airmass
+from data import process_layers as layers
 
 # OPEN WEATHER MAP API guide - https://openweathermap.org/current
 
@@ -27,15 +27,16 @@ def fetch_data(city) -> requests.models.Response:
     return response
 
 
-def fetch_city_data(city) -> (str, Image):
+def fetch_city_data(city, layer) -> (str, Image):
     response = fetch_data(city)
     get_data(response)
     data = data_to_json(response)  # import to database
     coords = get_latitude_longitude(response)
 
-    response = airmass.get_airmass_region((math.floor(coords[0]) - 1, math.floor(coords[1]) - 1,
-                                           math.ceil(coords[0]) + 1, math.ceil(coords[1]) + 1))
-    image_path = airmass.get_airmass_image(response)
+    response = layers.get_layer_region((math.floor(coords[0]) - 1, math.floor(coords[1]) - 1,
+                                        math.ceil(coords[0]) + 1, math.ceil(coords[1]) + 1),
+                                       layers.get_val_of_layer_by_index(int(layer)))
+    image_path = layers.get_layer_image(response)
     image = Image.open(image_path)  # import to database
     return data, image
 

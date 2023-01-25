@@ -66,7 +66,7 @@ def print_locations() -> None:
         print(f"{count + INDEX_OFFSET}. {key}")
 
 
-def get_val_by_index(index: int) -> tuple:
+def get_val_of_location_by_index(index: int) -> tuple:
     return list(coordinates.values())[index - INDEX_OFFSET]
 
 
