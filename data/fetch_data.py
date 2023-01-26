@@ -1,31 +1,48 @@
 import datetime as dt
 import json
+import math
 
 import requests
 import unidecode as unidecode
+from PIL import Image
 
 import authentication.credentials as credentials
+from data import process_layers as layers
 
 # OPEN WEATHER MAP API guide - https://openweathermap.org/current
 
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather?"
 
 
-def kelvin_to_celsius_fahrenheit(kelvin):
+def kelvin_to_celsius_fahrenheit(kelvin) -> (float, float):
     celsius = kelvin - 273.15
     fahrenheit = celsius * (9 / 5) + 32
     return celsius, fahrenheit
 
 
-def fetch_data(city=None) -> requests.models.Response:
+def fetch_data(city) -> requests.models.Response:
     # fetch data
     url = BASE_URL + "appid=" + credentials.api_key + "&q=" + city
     response = requests.get(url).json()
     return response
 
 
+def fetch_city_data(city, layer) -> (str, Image):
+    response = fetch_data(city)
+    get_data(response)
+    data = data_to_json(response)  # import to database
+    coords = get_latitude_longitude(response)
+
+    response = layers.get_layer_region((math.floor(coords[0]) - 1, math.floor(coords[1]) - 1,
+                                        math.ceil(coords[0]) + 1, math.ceil(coords[1]) + 1),
+                                       layers.get_val_of_layer_by_index(int(layer)))
+    image_path = layers.get_layer_image(response)
+    image = Image.open(image_path)  # import to database
+    return data, image
+
+
 # this method is used only for tests
-def print_data(response=None):
+def print_data(response) -> None:
     city = response['name']
     temp_kelvin = response['main']['temp']
     temp_celsius, temp_fahrenheit = kelvin_to_celsius_fahrenheit(temp_kelvin)
@@ -49,11 +66,11 @@ def print_data(response=None):
     print(response)
 
 
-def get_data(response=None) -> dict:
+def get_data(response) -> dict:
     time_of_data_calc = dt.datetime.utcfromtimestamp(response['dt'] + response['timezone'])  # time of data calculation
     city = response['name']  # city name
-    latitude = response['coord']['lat']  # city geo location, latitude
-    longitude = response['coord']['lon']  # city geo location, longitude
+    latitude = response['coord']['lat']  # city geolocation, latitude
+    longitude = response['coord']['lon']  # city geolocation, longitude
 
     weather = response['weather'][0]['main']  # group of weather parameters (Rain, Snow, Extreme etc.)
     description = response['weather'][0]['description']  # weather condition within the group
@@ -84,7 +101,7 @@ def get_data(response=None) -> dict:
 
     data = {
         "time_of_data_calc": time_of_data_calc,
-        "city": unidecode(city),
+        "city": unidecode.unidecode(city),
         "latitude": latitude,
         "longitude": longitude,
         "weather": weather,
@@ -111,14 +128,17 @@ def get_data(response=None) -> dict:
         "sunset_time": sunset_time
     }
 
+    print(f"\u001b[32mMeteorological data of\u001b[0m {city} \u001b[32mwas stored successfully!\u001b[0m")
+
     return data
 
 
-def data_to_json(response=None) -> str:
+def data_to_json(response) -> str:
     json_object = json.dumps(get_data(response), default=str, indent=4)
     print(json_object)
+    print()
     return json_object
 
 
-def get_latitude_longitude(response=None) -> tuple:
+def get_latitude_longitude(response) -> tuple:
     return response['coord']['lat'], response['coord']['lon']
