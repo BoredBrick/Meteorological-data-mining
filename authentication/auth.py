@@ -71,10 +71,10 @@ def assert_response(response, success_code=200):
 
     Args:
         response (obj):      The authentication response.
-        success_code (int):  The expected sucess code (200).
+        success_code (int):  The expected success code (200).
 
     Returns:
-        Nothing if success, error message if fail.
+        Nothing if success, error message if failed.
     '''
 
     assert response.status_code == success_code, \

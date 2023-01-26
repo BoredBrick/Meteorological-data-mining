@@ -1,3 +1,5 @@
+from requests import Response
+
 layers = {
     "AIRMASS_RGB": "msg_fes:rgb_airmass",
     "CONVECTION_RGB": "msg_fes:rgb_convection",
@@ -36,7 +38,7 @@ def print_layers() -> None:
         print(f"{count + INDEX_OFFSET}. {key}")
 
 
-def get_layer_region(coords: tuple, layer: str):
+def get_layer_region(coords: tuple, layer: str) -> Response:
     access_token = auth.get_token()
 
     service_url = 'https://view.eumetsat.int/geoserver/ows?'
@@ -74,7 +76,7 @@ def get_layer_region(coords: tuple, layer: str):
     return requests.get(service_url, params=payload)
 
 
-def get_layer_image(layer: str, response=None):
+def get_layer_image(layer: str, response) -> str:
     folder_name = layer + "//"  # Donwload the files in a folder with the name of the product
     os.makedirs(folder_name, exist_ok=True)
     img_landing = folder_name + time.strftime("%Y_%m_%d-%H_%M_%S") + ".jpg"

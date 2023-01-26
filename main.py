@@ -1,6 +1,5 @@
 import argparse
 import math
-import os
 import sys
 import time
 import warnings
@@ -11,9 +10,10 @@ from PIL import Image
 from coordinates.coordinates import get_val_of_location_by_index
 from coordinates.coordinates import print_locations
 from data import fetch_data as fetcher
-from data import  process_layers as layers
+from data import process_layers as layers
 
 warnings.simplefilter("ignore")
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -41,7 +41,8 @@ def main():
                     location = input("\u001b[35mChoose index of location:\u001b[0m ")
                     print()
 
-                    response = layers.get_layer_region(get_val_of_location_by_index(int(location)), layers.get_val_of_layer_by_index(int(layer)))
+                    response = layers.get_layer_region(get_val_of_location_by_index(int(location)),
+                                                       layers.get_val_of_layer_by_index(int(layer)))
                     image_path = layers.get_layer_image(layers.get_key_of_layer_by_index(int(layer)), response)
                     image = Image.open(image_path)  # import to database
                     image.show()
@@ -100,7 +101,7 @@ def main():
 
                 if option_location == "1":
                     response = layers.get_layer_region(get_val_of_location_by_index(int(location)),
-                                                        layers.get_val_of_layer_by_index(int(layer)))
+                                                       layers.get_val_of_layer_by_index(int(layer)))
                     image_path = layers.get_layer_image(layers.get_key_of_layer_by_index(int(layer)), response)
                     image = Image.open(image_path)  # import to database
                     # image.show()
@@ -111,7 +112,7 @@ def main():
                     coords = fetcher.get_latitude_longitude(response)
 
                     response = layers.get_layer_region((math.floor(coords[0]) - 1, math.floor(coords[1]) - 1.5,
-                                                       math.ceil(coords[0]) + 1, math.ceil(coords[1]) + 1.5),
+                                                        math.ceil(coords[0]) + 1, math.ceil(coords[1]) + 1.5),
                                                        layers.get_val_of_layer_by_index(int(layer)))
                     image_path = layers.get_layer_image(layers.get_key_of_layer_by_index(int(layer)), response)
                     image = Image.open(image_path)  # import to database

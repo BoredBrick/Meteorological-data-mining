@@ -69,8 +69,8 @@ def print_data(response) -> None:
 def get_data(response) -> dict:
     time_of_data_calc = dt.datetime.utcfromtimestamp(response['dt'] + response['timezone'])  # time of data calculation
     city = response['name']  # city name
-    latitude = response['coord']['lat']  # city geo location, latitude
-    longitude = response['coord']['lon']  # city geo location, longitude
+    latitude = response['coord']['lat']  # city geolocation, latitude
+    longitude = response['coord']['lon']  # city geolocation, longitude
 
     weather = response['weather'][0]['main']  # group of weather parameters (Rain, Snow, Extreme etc.)
     description = response['weather'][0]['description']  # weather condition within the group
