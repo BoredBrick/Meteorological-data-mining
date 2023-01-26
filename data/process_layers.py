@@ -1,4 +1,13 @@
+import os
+import time
+import urllib
+
+import requests
+from pyproj import Proj, transform
 from requests import Response
+
+from authentication import auth as auth
+from coordinates import coordinates
 
 layers = {
     "AIRMASS_RGB": "msg_fes:rgb_airmass",
@@ -13,16 +22,6 @@ layers = {
 }
 
 INDEX_OFFSET = 1
-
-import os
-import time
-import urllib
-
-import requests
-from pyproj import Proj, transform
-
-from authentication import auth as auth
-from coordinates import coordinates
 
 
 def get_key_of_layer_by_index(index: int) -> str:
