@@ -14,6 +14,8 @@ from data import process_layers as layers
 
 warnings.simplefilter("ignore")
 
+layer_update_time = 10 * 60
+
 
 def main():
     ap = argparse.ArgumentParser()
@@ -98,7 +100,6 @@ def main():
             print()
 
             while not keyboard.is_pressed('q'):
-
                 if option_location == "1":
                     response = layers.get_layer_region(get_val_of_location_by_index(int(location)),
                                                        layers.get_val_of_layer_by_index(int(layer)))
@@ -121,12 +122,10 @@ def main():
                 if option_fetching == "1":
                     break
                 else:
-                    waiting = 0
-                    while not keyboard.is_pressed('q'):
-                        waiting += 0.1
-                        if waiting >= 600:
-                            break
-                        time.sleep(0.1)
+                    try:
+                        time.sleep(layer_update_time)
+                    except KeyboardInterrupt:
+                        break
 
 
 if __name__ == "__main__":
