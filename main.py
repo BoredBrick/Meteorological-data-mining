@@ -4,11 +4,10 @@ import sys
 import time
 import warnings
 
-import keyboard
 from PIL import Image
 
+from console_prints import *
 from coordinates.coordinates import get_val_of_location_by_index
-from coordinates.coordinates import print_locations
 from data import fetch_data as fetcher
 from data import process_layers as layers
 
@@ -23,26 +22,12 @@ def main():
     args = vars(ap.parse_args())
 
     while True:
-
         if len(sys.argv) < 2:
-            print("\n \u001b[36;1m---------------------------------------------------------")
-            print("  A script for mining meteorological data from websites")
-            print("---------------------------------------------------------\u001b[0m \n")
-            print("\u001b[36m[1]\u001b[37m Fetch Meteorological Satellite Images\u001b[0m")
-            print("\u001b[36m[2]\u001b[37m Fetch Meteorological Data\u001b[0m")
-            print("\u001b[36m[0]\u001b[37m Quit Application\u001b[0m")
-            option = input("\u001b[35mChoose an option:\u001b[0m ")
-            print()
-
+            option = select_fetching()
             match option:
                 case "1":
-                    layers.print_layers()
-                    layer = input("\u001b[35mChoose index of layer:\u001b[0m ")
-                    print()
-                    print_locations()
-                    location = input("\u001b[35mChoose index of location:\u001b[0m ")
-                    print()
-
+                    layer = select_layer()
+                    location = select_location()
                     response = layers.get_layer_region(get_val_of_location_by_index(int(location)),
                                                        layers.get_val_of_layer_by_index(int(layer)))
                     image_path = layers.get_layer_image(layers.get_key_of_layer_by_index(int(layer)), response)
@@ -50,8 +35,7 @@ def main():
                     image.show()
 
                 case "2":
-                    city = input("\u001b[35mChoose a city:\u001b[0m ")
-                    print()
+                    city = select_city()
                     response = fetcher.fetch_data(city)
                     fetcher.get_data(response)
                     data = fetcher.data_to_json(response)  # import to database
@@ -63,43 +47,22 @@ def main():
                     continue
 
         elif args["fetch"] == "all":
-            print("\n \u001b[36m---------------------------------------------------------")
-            print("  A script for mining meteorological data from websites")
-            print("---------------------------------------------------------\u001b[0m \n")
-            print("\u001b[36m[1]\u001b[37m Fetch Data For Location\u001b[0m")
-            print("\u001b[36m[2]\u001b[37m Fetch Data For City\u001b[0m")
-            print("\u001b[36m[0]\u001b[37m Quit application\u001b[0m")
-            option_location = input("\u001b[35mChoose an option:\u001b[0m ")
-            print()
-
-            layer = ""
+            option = select_all_fetching()
+            layer = select_layer()
             location = ""
             city = ""
-            match option_location:
+            match option:
                 case "1":
-                    layers.print_layers()
-                    layer = input("\u001b[35mChoose index of layer:\u001b[0m ")
-                    print()
-                    print_locations()
-                    location = input("\u001b[35mChoose index of location:\u001b[0m ")
-                    print()
+                    location = select_location()
                 case "2":
-                    layers.print_layers()
-                    layer = input("\u001b[35mChoose index of layer:\u001b[0m ")
-                    print()
-                    city = input("\u001b[35mChoose a city:\u001b[0m ")
-                    print()
+                    city = select_city()
                 case "0":
                     break
                 case _:
                     continue
 
-            print("\u001b[36m[1]\u001b[37m Fetch once\u001b[0m")
-            print("\u001b[36m[2]\u001b[37m Endless fetching\u001b[0m")
-            option_fetching = input("\u001b[35mChoose an option:\u001b[0m ")
-            print()
-
-            while not keyboard.is_pressed('q'):
+            while True:
+                option_location = select_all_fetching()
                 if option_location == "1":
                     response = layers.get_layer_region(get_val_of_location_by_index(int(location)),
                                                        layers.get_val_of_layer_by_index(int(layer)))
@@ -119,7 +82,7 @@ def main():
                     image = Image.open(image_path)  # import to database
                     # image.show()
 
-                if option_fetching == "1":
+                if select_endless_fetching() == "1":
                     break
                 else:
                     try:

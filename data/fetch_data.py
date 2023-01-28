@@ -22,7 +22,7 @@ def kelvin_to_celsius_fahrenheit(kelvin) -> (float, float):
 
 def fetch_data(city) -> requests.models.Response:
     # fetch data
-    url = BASE_URL + "appid=" + credentials.api_key + "&q=" + city
+    url = BASE_URL + "appid=" + credentials.weather_map_api_key + "&q=" + city
     response = requests.get(url).json()
     return response
 
