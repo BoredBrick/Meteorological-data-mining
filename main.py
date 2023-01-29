@@ -1,7 +1,6 @@
 import argparse
 import math
 import sys
-import time
 import warnings
 
 from PIL import Image
@@ -61,9 +60,9 @@ def main():
                 case _:
                     continue
 
+            endless_fetching = select_endless_fetching()
             while True:
-                option_location = select_all_fetching()
-                if option_location == "1":
+                if option == "1":
                     response = layers.get_layer_region(get_val_of_location_by_index(int(location)),
                                                        layers.get_val_of_layer_by_index(int(layer)))
                     image_path = layers.get_layer_image(layers.get_key_of_layer_by_index(int(layer)), response)
@@ -82,7 +81,7 @@ def main():
                     image = Image.open(image_path)  # import to database
                     # image.show()
 
-                if select_endless_fetching() == "1":
+                if endless_fetching == "1":
                     break
                 else:
                     try:

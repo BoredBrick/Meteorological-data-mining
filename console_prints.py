@@ -1,5 +1,5 @@
 from coordinates.coordinates import print_locations
-from data.process_layers import layers
+from data.process_layers import *
 
 
 def print_intro():
@@ -29,7 +29,7 @@ def select_all_fetching() -> str:
 
 
 def select_layer() -> str:
-    layers.print_layers()
+    print_layers()
     layer = input("\u001b[35mChoose index of layer:\u001b[0m ")
     print()
     return layer
