@@ -11,15 +11,15 @@ from authentication import credentials
 def get_token() -> str:
     sys.path.append(os.path.dirname(os.getcwd()))
     warnings.simplefilter("ignore")
-    access_token = generate_token(consumer_key=credentials.consumer_key,
-                                  consumer_secret=credentials.consumer_secret)
+    access_token = generate_token(eumetsat_consumer_key=credentials.eumetsat_consumer_key,
+                                  eumetsat_consumer_secret=credentials.eumetsat_consumer_secret)
     return access_token
 
 
 # ---------------------------------------------------------------------------
 
 def generate_token(apis_endpoint="https://api.eumetsat.int",
-                   consumer_key=None, consumer_secret=None,
+                   eumetsat_consumer_key=None, eumetsat_consumer_secret=None,
                    credentials_file=None, token_url=None):
     '''
     Function to generate an access token for interacting with EUMETSAT Data
@@ -27,8 +27,8 @@ def generate_token(apis_endpoint="https://api.eumetsat.int",
 
     Args:
         apis_endpoint (str):    The endpoint URL of the API
-        consumer_key (str):     The consumer key as a string
-        consumer_secret (str):  The consumer secret as a string.
+        eumetsat_consumer_key (str):     The consumer key as a string
+        eumetsat_consumer_secret (str):  The consumer secret as a string.
         credentials_file (str): An optional json format credentials file
         token_url (str):        The token URL (if different from default)
 
@@ -41,19 +41,19 @@ def generate_token(apis_endpoint="https://api.eumetsat.int",
         token_url = apis_endpoint + "/token"
 
     # check the credentials.
-    if not credentials_file and not consumer_key:
+    if not credentials_file and not eumetsat_consumer_key:
         print('No consumer key or credentials file given. Quitting...')
         return None
 
     if credentials_file:
         with open(credentials_file) as f:
             data = json.load(f)
-            consumer_key = data['consumer_key']
-            consumer_secret = data['consumer_secret']
+            eumetsat_consumer_key = data['eumetsat_consumer_key']
+            eumetsat_consumer_secret = data['eumetsat_consumer_secret']
 
     response = requests.post(
         token_url,
-        auth=requests.auth.HTTPBasicAuth(consumer_key, consumer_secret),
+        auth=requests.auth.HTTPBasicAuth(eumetsat_consumer_key, eumetsat_consumer_secret),
         data={'grant_type': 'client_credentials'},
         headers={"Content-Type": "application/x-www-form-urlencoded"}
     )
