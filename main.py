@@ -36,7 +36,6 @@ def main():
                 case "2":
                     city = select_city()
                     response = fetcher.fetch_data(city)
-                    fetcher.get_data(response)
                     data = fetcher.data_to_json(response)  # import to database
 
                 case "0":
@@ -70,7 +69,6 @@ def main():
                     # image.show()
                 else:
                     response = fetcher.fetch_data(city)
-                    fetcher.get_data(response)
                     data = fetcher.data_to_json(response)  # import to database
                     coords = fetcher.get_latitude_longitude(response)
 
