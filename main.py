@@ -3,12 +3,11 @@ import math
 import sys
 import warnings
 
-from PIL import Image
-
 from console_prints import *
 from coordinates.coordinates import get_val_of_location_by_index
 from data import fetch_data as fetcher
 from data import process_layers as layers
+from database import compress_and_upload_image as compression
 
 warnings.simplefilter("ignore")
 
@@ -30,8 +29,7 @@ def main():
                     response = layers.get_layer_region(get_val_of_location_by_index(int(location)),
                                                        layers.get_val_of_layer_by_index(int(layer)))
                     image_path = layers.get_layer_image(layers.get_key_of_layer_by_index(int(layer)), response)
-                    image = Image.open(image_path)  # import to database
-                    image.show()
+                    compression.compress_and_upload_image(image_path, location, layer)
 
                 case "2":
                     city = select_city()
@@ -65,8 +63,7 @@ def main():
                     response = layers.get_layer_region(get_val_of_location_by_index(int(location)),
                                                        layers.get_val_of_layer_by_index(int(layer)))
                     image_path = layers.get_layer_image(layers.get_key_of_layer_by_index(int(layer)), response)
-                    image = Image.open(image_path)  # import to database
-                    # image.show()
+                    compression.compress_and_upload_image(image_path, location, layer)
                 else:
                     response = fetcher.fetch_data(city)
                     data = fetcher.data_to_json(response)  # import to database
@@ -76,8 +73,6 @@ def main():
                                                         math.ceil(coords[0]) + 1, math.ceil(coords[1]) + 1.5),
                                                        layers.get_val_of_layer_by_index(int(layer)))
                     image_path = layers.get_layer_image(layers.get_key_of_layer_by_index(int(layer)), response)
-                    image = Image.open(image_path)  # import to database
-                    # image.show()
 
                 if endless_fetching == "1":
                     break
