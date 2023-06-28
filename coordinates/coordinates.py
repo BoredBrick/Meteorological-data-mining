@@ -70,6 +70,10 @@ def get_val_of_location_by_index(index: int) -> tuple:
     return list(coordinates.values())[index - INDEX_OFFSET]
 
 
+def get_key_of_location_by_index(index: int) -> str:
+    return list(coordinates.keys())[index - INDEX_OFFSET]
+
+
 def coords_to_string(coordinates: tuple) -> str:
     return ", ".join(map(str, coordinates))
 
