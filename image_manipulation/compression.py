@@ -15,9 +15,10 @@ def decompress_image(input_path, output_path):
     image.save(output_path)
 
 
-def compress_until_smaller_than_one_mb(input_path, output_path, quality=95):
+def compress_until_smaller_than_one_mb(input_path, output_path, quality=75):
     image = Image.open(input_path)
     while os.path.getsize(input_path) > max_size:
+        print(os.path.getsize(input_path))
         image.save(output_path, format='JPEG', quality=quality)
         quality -= 5
         if quality < 10:
