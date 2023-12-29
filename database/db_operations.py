@@ -19,16 +19,14 @@ def insert_image_into_database(image_path, layer, location, weather_data_id):
     cursor = db_connection.cursor()
 
     try:
-        with open(image_path, 'rb') as image_file:
+        sql_insert_query = "INSERT INTO radar_images (date, weather_data_id, layer, location, image) VALUES (%s, " \
+                            "%s, %s, %s, %s)"
 
-            sql_insert_query = "INSERT INTO radar_images (date, weather_data_id, layer, location, image) VALUES (%s, " \
-                               "%s, %s, %s, %s)"
-
-            date = datetime.now()
-            weather_data_id = weather_data_id
-            layer = layer
-            location = location
-            image_data = image_file.read()
+        date = datetime.now()
+        weather_data_id = weather_data_id
+        layer = layer
+        location = location
+        image_data = image_path
 
         data = (date, weather_data_id, layer, location, image_data)
 
@@ -86,23 +84,23 @@ def insert_weather_data(json_data):
         return cursor.lastrowid
 
 
-def retrieve_image_from_database(image_id):
+def retrieve_image_from_database(date):
     db_connection = connect_to_database()
 
     cursor = db_connection.cursor()
 
     try:
-        sql_select_query = "SELECT image FROM radar_images WHERE id = %s"
-        data = (image_id,)
+        sql_select_query = "SELECT image FROM radar_images WHERE date = %s"
+        data = (date,)
 
         cursor.execute(sql_select_query, data)
 
         result = cursor.fetchone()
 
         if result is not None:
-            image_data = result[0]
+            image_path = result[0]
 
-            image = Image.open(BytesIO(image_data))
+            image = Image.open(image_path)
 
             image.show()
 
