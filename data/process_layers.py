@@ -1,6 +1,7 @@
 import os
 import time
 import urllib
+import uuid
 
 import requests
 from pyproj import Proj, transform
@@ -76,9 +77,11 @@ def get_layer_region(coords: tuple, layer: str) -> Response:
 
 
 def get_layer_image(layer: str, response) -> str:
-    folder_name = layer + "//"  # Donwload the files in a folder with the name of the product
+    folder_name = "images/" + layer + "/"  # Donwload the files in a folder with the name of the product
     os.makedirs(folder_name, exist_ok=True)
-    img_landing = folder_name + time.strftime("%Y_%m_%d-%H_%M_%S") + ".jpg"
+    #img_landing = folder_name + time.strftime("%Y_%m_%d-%H_%M_%S") + ".jpg"
+    img_landing = folder_name + str(uuid.uuid4()) + ".jpg"
+
     urllib.request.urlretrieve(response.url, img_landing)
     print("\u001b[32mImage of " + layer + " was stored successfully!\u001b[0m")
 

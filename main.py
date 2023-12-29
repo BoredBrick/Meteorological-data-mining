@@ -8,7 +8,7 @@ from coordinates.coordinates import get_val_of_location_by_index
 from data import fetch_data as fetcher
 from data import process_layers as layers
 from database import compress_and_upload_image as compression
-from database.db_operations import insert_weather_data
+from database.db_operations import insert_weather_data, retrieve_image_from_database
 
 warnings.simplefilter("ignore")
 
