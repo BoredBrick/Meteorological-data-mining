@@ -30,11 +30,11 @@ def insert_image_into_database(image_path, layer, location, weather_data_id):
             location = location
             image_data = image_file.read()
 
-            data = (date, weather_data_id, layer, location, image_data)
+        data = (date, weather_data_id, layer, location, image_data)
 
-            cursor.execute(sql_insert_query, data)
+        cursor.execute(sql_insert_query, data)
 
-            db_connection.commit()
+        db_connection.commit()
 
     except mysql.Error as error:
         print(f"Error inserting the image into the database: {error}")
