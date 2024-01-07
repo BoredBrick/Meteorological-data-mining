@@ -13,7 +13,8 @@ from database.db_operations import insert_weather_data, retrieve_image_from_data
 warnings.simplefilter("ignore")
 
 layer_update_time = 10 * 60
-
+location_type_area = "area"
+location_type_city = "city"
 
 def main():
     ap = argparse.ArgumentParser()
@@ -30,7 +31,7 @@ def main():
                     response = layers.get_layer_region(get_val_of_location_by_index(int(location)),
                                                        layers.get_val_of_layer_by_index(int(layer)))
                     image_path = layers.get_layer_image(layers.get_key_of_layer_by_index(int(layer)), response)
-                    compression.compress_and_upload_image(image_path, layer, location)
+                    compression.compress_and_upload_image(image_path, layer, location, location_type_area)
 
                 case "2":
                     city = select_city()
@@ -64,7 +65,7 @@ def main():
                     response = layers.get_layer_region(get_val_of_location_by_index(int(location)),
                                                        layers.get_val_of_layer_by_index(int(layer)))
                     image_path = layers.get_layer_image(layers.get_key_of_layer_by_index(int(layer)), response)
-                    compression.compress_and_upload_image(image_path, layer, location)
+                    compression.compress_and_upload_image(image_path, layer, location, location_type_area)
                 else:
                     response = fetcher.fetch_data(city)
                     data = fetcher.data_to_json(response)  # import to database
@@ -75,7 +76,7 @@ def main():
                                                         math.ceil(coords[0]) + 1, math.ceil(coords[1]) + 1.5),
                                                        layers.get_val_of_layer_by_index(int(layer)))
                     image_path = layers.get_layer_image(layers.get_key_of_layer_by_index(int(layer)), response)
-                    compression.compress_and_upload_image(image_path, layer, city, insert_id)
+                    compression.compress_and_upload_image(image_path, layer, city, location_type_city, insert_id)
 
                 if endless_fetching == "1":
                     break

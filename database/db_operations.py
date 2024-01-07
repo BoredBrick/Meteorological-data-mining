@@ -14,21 +14,22 @@ def connect_to_database():
     return db_connection
 
 
-def insert_image_into_database(image_path, layer, location, weather_data_id):
+def insert_image_into_database(image_path, layer, location, weather_data_id, location_type):
     db_connection = connect_to_database()
     cursor = db_connection.cursor()
 
     try:
-        sql_insert_query = "INSERT INTO radar_images (date, weather_data_id, layer, location, image) VALUES (%s, " \
-                            "%s, %s, %s, %s)"
+        sql_insert_query = "INSERT INTO radar_images (date, weather_data_id, layer, location, location_type, image) VALUES (%s, " \
+                            "%s, %s, %s, %s, %s)"
 
         date = datetime.now()
         weather_data_id = weather_data_id
         layer = layer
         location = location
+        location_type = location_type
         image_data = image_path
 
-        data = (date, weather_data_id, layer, location, image_data)
+        data = (date, weather_data_id, layer, location, location_type, image_data)
 
         cursor.execute(sql_insert_query, data)
 

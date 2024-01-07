@@ -11,7 +11,7 @@ from data import process_layers as layers
 
 # OPEN WEATHER MAP API guide - https://openweathermap.org/current
 
-BASE_URL = "http://api.openweathermap.org/data/2.5/weather?"
+BASE_URL = "https://api.openweathermap.org/data/2.5/weather?"
 
 
 def kelvin_to_celsius_fahrenheit(kelvin) -> (float, float):
