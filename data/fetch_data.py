@@ -135,8 +135,6 @@ def get_data(response) -> dict:
 
 def data_to_json(response) -> str:
     json_object = json.dumps(get_data(response), default=str, indent=4)
-    print(json_object)
-    print()
     return json_object
 
 

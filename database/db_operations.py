@@ -73,8 +73,6 @@ def insert_weather_data(json_data):
         )
 
         cursor.execute(sql, values)
-        print("The weather data has been successfully inserted into database")
-
 
     except mysql.Error as error:
         print(f"Error inserting weather data into the database: {error}")
