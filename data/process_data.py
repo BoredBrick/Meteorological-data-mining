@@ -16,7 +16,7 @@ def fetch_and_process_data(option, selected_layer, selected_location, selected_c
 
     match option:
         case 1:
-            data_response = get_layer_region(get_val_of_location_by_index(int(selected_location)),
+            image_response = get_layer_region(get_val_of_location_by_index(int(selected_location)),
                                              get_val_of_layer_by_index(int(selected_layer)))
         case 2 | 3 | 4:
             data_response = fetcher.fetch_data(selected_city)
