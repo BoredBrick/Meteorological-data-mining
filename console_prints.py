@@ -53,7 +53,7 @@ def select_location() -> str:
 def select_city() -> str:
     city = input("\u001b[35mChoose a city:\u001b[0m ")
     print()
-    return city
+    return city.strip()
 
 
 def select_endless_fetching() -> str:
